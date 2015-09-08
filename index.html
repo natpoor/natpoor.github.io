@@ -85,25 +85,42 @@ Residual standard error: 11.23 on 83 degrees of freedom
 Multiple R-squared:  0.6268,	Adjusted R-squared:  0.6043 
 F-statistic: 27.88 on 5 and 83 DF,  p-value: < 2.2e-16
 </pre><br />
-<i>Model notes:</i><br />
-The model, a regression run in R, has two things to note: the exponential term for the democracy score,
-and the inclusion of p-values just over 0.10.
+<i>What does this mean?</i><br />
+The model, a regression run in R, shows that democracy is really important for open data! How important? Important enough that
+there is an exponential relationship between the two. (I noticed this when I plotted just the democracy score against the
+open data score, the scatterplot wasn't roughly linear, it curved up, thus, more is more.) So, more democracy generally means
+even more open data in a non-linear relationship (so like 1=1, 2=4, 3=9, etc).
 <br /><br />
-The exponential term, that is, more democracy results in an even greater open data index score (exponentially not just linearly),
+<i>Variable scales:</i><br />
+<ul>
+ <li>Open data: 0-100 (percentage). Higher = more open data.</li>
+ <li>Democracy index: 1.00 - 9.99 (essentially 1.00 - 10.00, two decimal places). Higher = more democracy.</li>
+ <li>Global innovation: 0.00 - 100 (two decimal places). Higher = more innovation.</li>
+ <li>Press freedom: 0.00 - 100 (two decimal places). Higher = <i>less free</i>.</li>
+ <li>GDP: $US in millions. Higher = more GDP.</li>
+</ul>
+<br /><br />
+<i>Model notes:</i><br />
+There are three things to note: the exponential term for the democracy score, the inclusion of p-values just over 0.10, and
+press freedom is influencing the model in the wrong direction!
+<ol>
+<li>The exponential term, that is, more democracy results in an even greater open data index score (exponentially not just linearly),
 shows the importance of democracy to open data, <a href="http://www.rstreet.org/2014/05/22/democracy-and-open-data-are-the-two-linked/">as noted by Molly Schwartz in May 2014</a>,
 although the analysis here is different. But it means that the variables are centered, that is, the average of each is subtracted 
 from each observation (so the mean of the centered version of each variable becomes zero). The you can make the squared term.
 I put a 'C' in the centered versions of the variables, as you can see in the model (I could have renamed everything for
-presentation but it's easy enough to understand).
-<br /><br />
-If you know statistics a little, you might recall that p-values are taught as a cutoff. Except, that's wrong.
+presentation but it's easy enough to understand).</li>
+<li>If you know statistics a little, you might recall that p-values are taught as a cutoff. Except, that's wrong.
 P-values are a general guide that allow us to discerne variables of interest or, if we already know some varaibles that are theoretically
 relevant, such as GDP, we can then tell if we should keep them in the model. So, a p-value of 0.1029 for GDP is fine. That tells
 us that we are 89.71% sure that there is a statistical relationship between GDP and the dependent variable (Open Data score),
 given the other variables, <i>all other things being equal</i>. But all other things aren't equal. We know GDP is theoretically
 relevant (a country has to have enough wealth to have a government with a computer infrastructure where data is stored and 
 from where that data can be shared). So, we keep it and the Press Freedom score (a indicator of information sharing), because
-we know that a p-value just over 0.10 is fine for theoretically relevant variables. ("Just over" well how much is ok? I don't know.)
+we know that a p-value just over 0.10 is fine for theoretically relevant variables. ("Just over" well how much is ok? I don't know.)</li>
+<li>Why is press freedom working in the wrong direction? That is, higher scores of press freedom (less press freedom) means more
+open data, although the influence is small. I don't know yet, I'm looking at that.</li>
+</ol>
 <br /><br />
 Lastly, the adjusted R-squared, a measure of how much of the variance of the dependent variable is explained by the model,
 is 0.6043, so about 60% of what is going on with the Open Data score is explained by the model, which is really good
