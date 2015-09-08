@@ -58,13 +58,52 @@ body
 
 <div id="bottom-text">
 <b>Indexes used:</b><br />
-<i>Dependent variable:</i>
+<i>Dependent variable:</i><br />
 The <a href="http://index.okfn.org/place/">Global Open Data Index</a>, 2014, from the Open Knowledge Foundation.<br />
 <i>Independent variables:</i><br />
 The <a href="https://en.wikipedia.org/wiki/Democracy_Index">Democracy Index</a>, 2012, via Wikpedia, from the Economist Intelligence Unit.<br />
 The <a href="http://www.globalinnovationindex.org/">Global Innovation Index</a>, 2014.<br />
 The <a href="https://en.wikipedia.org/wiki/Press_Freedom_Index">Press Freedom Index</a>, 2014, via Wikipedia, from Reporters Without Borders.<br />
-<a href="http://data.worldbank.org/indicator/NY.GDP.MKTP.CD">GDP</a>, 2014, from the World Bank.<br />
+<a href="http://data.worldbank.org/indicator/NY.GDP.MKTP.CD">Gross Domestic Product (GDP)</a>, 2014, from the World Bank.<br />
+<br />
+<i>The model:</i><br />
+<pre>
+                Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  -2.351e+00  1.748e+00  -1.345   0.1822    
+dem_scoreC    7.108e+00  1.546e+00   4.597 1.52e-05 ***
+demCsquared   6.927e-01  3.674e-01   1.885   0.0629 .  
+gii_scoreC    3.970e-01  1.790e-01   2.218   0.0293 *  
+press_scoreC  2.639e-01  1.590e-01   1.659   0.1008    
+gdpC          1.004e-06  6.086e-07   1.649   0.1029    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 11.23 on 83 degrees of freedom
+  (4 observations deleted due to missingness)
+Multiple R-squared:  0.6268,	Adjusted R-squared:  0.6043 
+F-statistic: 27.88 on 5 and 83 DF,  p-value: < 2.2e-16
+</pre><br />
+<i>Model notes:</i><br />
+The model, a regression run in R, has two things to note: the exponential term for the democracy score,
+and the inclusion of p-values just over 0.10.
+<br />
+The exponential term, that is, more democracy results in an even greater open data index score (exponentially not just linearly),
+shows the importance of democracy to open data, <a href="http://www.rstreet.org/2014/05/22/democracy-and-open-data-are-the-two-linked/">as noted by Molly Schwartz in May 2014</a>,
+although the analysis here is different. But it means that the variables are centered, that is, the average of each is subtracted 
+from each observation (so the mean of the centered version of each variable becomes zero). The you can make the squared term.
+<br />
+If you know statistics a little, you might recall that p-values are taught as a cutoff. Except, that's wrong.
+P-values are a general guide that allow us to discerne variables of interest or, if we already know some varaibles that are theoretically
+relevant, such as GDP, we can then tell if we should keep them in the model. So, a p-value of 0.1029 for GDP is fine. That tells
+us that we are 89.71% sure that there is a statistical relationship between GDP and the dependent variable (Open Data score),
+given the other variables, <i>all other things being equal</i>. But all other things aren't equal. We know GDP is theoretically
+relevant (a country has to have enough wealth to have a government with a computer infrastructure where data is stored and 
+from where that data can be shared). So, we keep it and the Press Freedom score (a indicator of information sharing), because
+we know that a p-value just over 0.10 is fine for theoretically relevant variables. ("Just over" well how much is ok? I don't know.)
+<br />
+Lastly, the adjusted R-squared, a measure of how much of the variance of the dependent variable is explained by the model,
+is 0.6043, so about 60% of what is going on with the Open Data score is explained by the model, which is really good
+(it's especially a good amount for the social sciences).<br />
 </div>
 
 <script type="text/javascript">
