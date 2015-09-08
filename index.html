@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+ <html>
+   <head>
+    <title>Open Data Index Model Predictions</title>
+    <meta charset="UTF-8">
+   </head>
+
+    <!-- <script type="text/javascript" src="d3/d3.js"></script> -->
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+
+
+<style>
+body
+.tooltip {
+  position: absolute;
+  width: 150px;
+  height: 40px;
+  border: 1px;
+  padding: 4px;
+  border-radius: 8px;
+  border-style: solid;
+  border-color: black;
+  background: AliceBlue;
+  font-family: serif;
+  font-size: 10pt;
+  pointer-events: none;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: black;
+    shape-rendering: crispEdges;
+}
+
+.axis text {
+    font-family: sans-serif;
+    font-size: 11px;
+}
+
+.legend {
+    font-family: sans-serif;
+    font-size: 11px;   // px, pt?
+}
+
+.title {
+    font-family: sans-serif;
+    font-size: 20px;
+}
+</style>
+
+   <body>
+
+  <div id="svg1-div"></div>
+
+<script type="text/javascript">
+var h = 1000
+var w = 1000
+
+var padding = 25 // SCALES AND PADDING SOOOOO IMPORTANT!!!!
+
+var xScale = d3.scale.linear()  
+              .domain([0, 100]) // input domain
+              .range([padding, w - padding]); // output range -- scale on Dem is 0-100 but my svg is 1000 wide, so svg Width = w
+
+var yScale = d3.scale.linear()
+              .domain([0, 100]) // input domain - this is from small to large
+              .range([h - padding, padding]); // output range, svg Height = h -- REVERSED since it's comp sci co-ord setup but the output isn't!!!
+
+var xAxis = d3.svg.axis()
+                  .scale(xScale)
+                  .orient("bottom");
+
+var yAxis = d3.svg.axis()
+                  .scale(yScale)
+                  .orient("left");
+
+var mysvg = d3.select("#svg1-div").append("svg")
+    .attr("height", h)
+    .attr("width", w);
+
+// add the tooltip area to the webpage
+var tooltip = d3.select("body").append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
+    // http://bl.ocks.org/weiglemc/6185069
+
+// apparently only works with a WEB SERVER serving it (what!) or maybe via Firefox.
+var mydata = []
+// callback interior for reading CSV starts here! Get the data.
+d3.csv("opendata2.csv", function(data) {
+  mydata = data.map(function(d) {
+  return {
+    country : d.country,  // leaves as text
+    predicted : +d.predicted, // coerces to number, the + there
+    actual : +d.actual,  // coerces to number, the + there
+    ypos : +d.ypos // coerce to numeric, this is the ypos to add jitter and hopefully reduce overlap
+    };
+    });
+
+  mysvg.selectAll("text") // do words first, so circles are drawn over them and can mouseover better (text blocks this)
+      .data(mydata)
+      .enter().append("text")
+        .attr("x", function(d) { return xScale(d.predicted) + 5} )
+        .attr("y", function(d) { return yScale(d.ypos) + 3} )
+        .text( function(d) { return d.country })
+        .attr("font-family", "sans-serif")
+        .attr("font-size", "11px")
+        .attr("fill", "black");
+
+  mysvg.selectAll("circle")
+      .data(mydata)
+      .enter().append("circle")
+        .attr("cx", function(d) { return xScale(d.predicted)} )
+        .attr("cy", function(d) { return yScale(d.ypos) } )
+        .attr("r", 4)
+        .style("fill", function(d) {
+          if (d.actual - d.predicted > 10) {return "blue"}
+          else if (d.actual - d.predicted < -10) {return "red"}
+          else {return "black"}
+         }) //style ones, } is function and the ) is for the style call
+        .on("mouseover", function(d) {
+          tooltip.transition()
+               .duration(150)
+               .style("opacity", 1);
+          tooltip.html(d.country + "<br/> Actual: " + d.actual + "<br/> Model: " + Math.round(d.predicted))
+               .style("left", (d3.event.pageX + 5) + "px")
+               .style("top", (d3.event.pageY - 28) + "px");
+        }) // mouseover
+        .on("mouseout", function(d) {
+          tooltip.transition()
+               .duration(300)
+               .style("opacity", 0);
+        }); // mouseout
+
+  mysvg.append("g")   // these have to be in the callback, I hate the callback......
+      .attr("class", "axis")  //Assign "axis" class  above in CSS styles
+      .attr("transform", "translate(0," + (h - padding) + ")")
+      .call(xAxis)
+    .append("text")
+      .attr("class", "label")
+      .attr("x", w - 25)
+      .attr("y", -6)
+      .style("text-anchor", "end")
+      .text("Model Prediction");
+
+  mysvg.append("g")
+      .attr("class", "axis")
+      .attr("transform", "translate(" + padding + ",0)")
+      .call(yAxis)
+    .append("text")
+      .attr("class", "label")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 15)
+      .attr("x", -30)
+      .style("text-anchor", "end")
+      .text("Actual Open Data Index");
+
+  var myline = mysvg.append("line")
+     .attr("x1", xScale(0))
+     .attr("y1", yScale(0))
+     .attr("x2", xScale(100))
+     .attr("y2", yScale(100))
+     .attr("stroke-width", 1)
+     .attr("stroke", "slategray")
+     .style("stroke-dasharray", ("3, 5"));
+
+// THIS NEXT CHUNK IS FOR THE LEGEND including the funny little dataset I am using, a hack really.
+var colorData = [["blue", "Above Model Prediction"], ["black", "As Predicted, +/- 10"], ["red", "Below Model Prediction"]]
+// trying to avoid having to declare this in the dataset
+// so make it its own little dataset and generate the legend elements from it.
+var legendRectSize = 10
+var legendSpacing  = 5
+
+var legend = mysvg.selectAll('.legend')
+  .data(colorData)
+  .enter()
+  .append('g')
+  .attr('class', 'legend')
+  .attr('transform', function(d, i) {
+    var height = legendRectSize + legendSpacing;
+    var offset =  height * 3 / 2;    // 3 is the number of legend items, I think
+    var horz = -2 * legendRectSize + (w * .8); // so, 80% of the way to the right of the overall Width w
+    var vert = i * height - offset + (h * .6); 
+    return 'translate(' + horz + ',' + vert + ')';
+    });
+
+legend.append('rect')
+  .attr('width', legendRectSize)
+  .attr('height', legendRectSize)
+  .style('fill', function(d) { return d[0]; } ); // woo!
+//  .style('stroke', color);
+
+legend.append('text')
+  .attr('x', legendRectSize + legendSpacing)
+  .attr('y', legendRectSize - 2)
+  .text(function(d) { return d[1]; });
+
+var chartTitle = mysvg.append('g')
+  .attr("transform", "translate(" + xScale(20) + "," + yScale(90) + ")")
+  .attr("class", "title");
+
+chartTitle.append('text')
+  .text("Open Data Index");
+
+chartTitle.append('text')
+  .attr('y', 25)
+  .attr('x', 10)
+  .text("by Country");
+
+chartTitle.append('text')
+  .attr('y', 50)
+  .attr('x', 10)
+  .text("Model vs. Actual");
+
+chartTitle.append('text')
+  .attr('y', 75)
+  .attr('x', 10)
+  .text("(with jitter)");
+
+
+
+});  // THIS IS THE CALLBACK INSIDE THESE for the main data biding
+//have the drawing in the callback ??? so it draws AFTER the data is read. I don't get it yet. VICTORY!!!! OMG that sucked.
+</script>
+
+</body>
+</html>
