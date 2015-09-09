@@ -185,8 +185,49 @@ d3.csv("opendata2.csv", function(data) {
   mysvg.selectAll("text") // do words first, so circles are drawn over them and can mouseover better (text blocks this)
       .data(mydata)
       .enter().append("text")
-        .attr("x", function(d) { return xScale(d.predicted) + 5} )
-        .attr("y", function(d) { return yScale(d.ypos) + 3} )
+        .attr("x", function(d) { 
+          if (d.country == "Australia") {return xScale(d.predicted) - 47}
+          else if (d.country == "Netherlands") {return xScale(d.predicted) - 5}
+          else if (d.country == "Uruguay") {return xScale(d.predicted) - 3}
+          else if (d.country == "Malta") {return xScale(d.predicted) - 3}
+          else if (d.country == "Brazil") {return xScale(d.predicted) - 5}
+          else if (d.country == "Paraguay") {return xScale(d.predicted) - 5}
+          else if (d.country == "Moldova") {return xScale(d.predicted) - 5}
+          else if (d.country == "Indonesia") {return xScale(d.predicted) - 1}
+          else if (d.country == "Bulgaria") {return xScale(d.predicted) - 35}
+          else if (d.country == "Serbia") {return xScale(d.predicted) - 37}
+          else if (d.country == "Spain") {return xScale(d.predicted) - 34}
+          else if (d.country == "Hungary") {return xScale(d.predicted) - 5}
+          else if (d.country == "Greece") {return xScale(d.predicted) - 41}
+          else if (d.country == "Hong Kong") {return xScale(d.predicted) - 5}
+          else if (d.country == "Bangladesh") {return xScale(d.predicted) - 60}
+          else if (d.country == "Senegal") {return xScale(d.predicted) - 30}
+          else if (d.country == "Rwanda") {return xScale(d.predicted) - 45}
+          else if (d.country == "Egypt") {return xScale(d.predicted) - 36}
+          else if (d.country == "Cambodia") {return xScale(d.predicted) - 56}
+          else if (d.country == "Botswana") {return xScale(d.predicted) - 3}
+          else if (d.country == "Lebanon") {return xScale(d.predicted) - 5}
+          else if (d.country == "Kenya") {return xScale(d.predicted) - 38}
+          else if (d.country == "Tanzania") {return xScale(d.predicted) + 4}
+          else {return xScale(d.predicted) + 5} })
+        .attr("y", function(d) {
+          if (d.country == "Netherlands") {return yScale(d.ypos) + 12}
+          else if (d.country == "Uruguay") {return yScale(d.ypos) + 13}
+          else if (d.country == "Malta") {return yScale(d.ypos) + 13}
+          else if (d.country == "Brazil") {return yScale(d.ypos) - 6}
+          else if (d.country == "Paraguay") {return yScale(d.ypos) - 6}
+          else if (d.country == "Moldova") {return yScale(d.ypos) - 5}
+          else if (d.country == "Indonesia") {return yScale(d.ypos) - 5}
+          else if (d.country == "Hungary") {return yScale(d.ypos) - 6}
+          else if (d.country == "Bulgaria") {return yScale(d.ypos) + 12}
+          else if (d.country == "Hong Kong") {return yScale(d.ypos) - 5}
+          else if (d.country == "Bangladesh") {return yScale(d.ypos) - 3}
+          else if (d.country == "Senegal") {return yScale(d.ypos) - 6}
+          else if (d.country == "Botswana") {return yScale(d.ypos) + 13}
+          else if (d.country == "Lebanon") {return yScale(d.ypos) - 6}
+          else if (d.country == "Tanzania") {return yScale(d.ypos) - 2}
+          else if (d.country == "Bosnia and Herzegovina") {return yScale(d.ypos) + 7}
+          else { return yScale(d.ypos) + 3} })
         .text( function(d) { return d.country })
         .attr("font-family", "sans-serif")
         .attr("font-size", "11px")
