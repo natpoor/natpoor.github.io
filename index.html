@@ -70,20 +70,18 @@ The <a href="https://en.wikipedia.org/wiki/Press_Freedom_Index">Press Freedom In
 <br />
 <i>The model:</i><br />
 <pre>
-                Estimate Std. Error t value Pr(>|t|)    
-(Intercept)  -2.351e+00  1.748e+00  -1.345   0.1822    
-dem_scoreC    7.108e+00  1.546e+00   4.597 1.52e-05 ***
-demCsquared   6.927e-01  3.674e-01   1.885   0.0629 .  
-gii_scoreC    3.970e-01  1.790e-01   2.218   0.0293 *  
-press_scoreC  2.639e-01  1.590e-01   1.659   0.1008    
-gdpC          1.004e-06  6.086e-07   1.649   0.1029    
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -1.959e+00  1.703e+00  -1.150   0.2532    
+dem_scoreC   5.472e+00  1.195e+00   4.581 1.57e-05 ***
+demCsquared  5.793e-01  3.603e-01   1.608   0.1116    
+gii_scoreC   4.013e-01  1.797e-01   2.233   0.0282 *  
+gdpC         1.301e-06  5.838e-07   2.228   0.0285 *  
 ---
-Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’
 
-Residual standard error: 11.23 on 83 degrees of freedom
-  (4 observations deleted due to missingness)
-Multiple R-squared:  0.6268,	Adjusted R-squared:  0.6043 
-F-statistic: 27.88 on 5 and 83 DF,  p-value: < 2.2e-16
+Residual standard error: 11.28 on 85 degrees of freedom
+Multiple R-squared:  0.6187,	Adjusted R-squared:  0.6007 
+F-statistic: 34.47 on 4 and 85 DF,  p-value: < 2.2e-16
 </pre><br />
 <i>What does this mean?</i><br />
 The model, a regression run in R, shows that democracy is really important for open data! How important? Important enough that
@@ -98,13 +96,11 @@ relationship in May 2014</a> but with a different analysis than I use here.
  <li>Open data: 0-100 (percentage). Higher = more open data.</li>
  <li>Democracy index: 1.00 - 9.99 (essentially 1.00 - 10.00, two decimal places). Higher = more democracy.</li>
  <li>Global innovation: 0.00 - 100 (two decimal places). Higher = more innovation.</li>
- <li>Press freedom: 0.00 - 100 (two decimal places). Higher = <i>less free</i>.</li>
  <li>GDP: $US in millions. Higher = more GDP.</li>
 </ul>
 <br />
 <i>Model notes:</i><br />
-There are three things to note: the exponential term for the democracy score, the inclusion of p-values just over 0.10, and
-press freedom is influencing the model in the wrong direction!
+There are two things to note: the exponential term for the democracy score, and the inclusion of p-values just over 0.10.
 <ol>
 <li>The exponential term, that is, more democracy results in an even greater open data index score (exponentially not just linearly),
 shows the importance of democracy to open data (again, <a href="http://www.rstreet.org/2014/05/22/democracy-and-open-data-are-the-two-linked/">Molly Schwartz's article</a>). But it means that the variables are centered, that is, the average of each is subtracted 
@@ -119,13 +115,24 @@ given the other variables, <i>all other things being equal</i>. But all other th
 relevant (a country has to have enough wealth to have a government with a computer infrastructure where data is stored and 
 from where that data can be shared). So, we keep it and the Press Freedom score (a indicator of information sharing), because
 we know that a p-value just over 0.10 is fine for theoretically relevant variables. ("Just over" well how much is ok? I don't know.)</li>
-<li>Why is press freedom working in the wrong direction? That is, higher scores of press freedom (less press freedom) means more
-open data, although the influence is small. I don't know yet, I'm looking at that.</li>
 </ol>
 <br />
 Lastly, the adjusted R-squared, a measure of how much of the variance of the dependent variable is explained by the model,
-is 0.6043, so about 60% of what is going on with the Open Data score is explained by the model, which is really good
-(it's especially a good amount for the social sciences).<br />
+is 0.6007, so about 60% of what is going on with the Open Data score is explained by the model, which is really good
+(it's especially a good amount for the social sciences).
+<br /><br />
+<i>Other indexes/variables I didn't use:</i>
+<ol>
+<li>The Press Freedom Index, 2014, via Wikipedia, from Reporters Without Borders. It was barely significant statistically in most
+models I ran, but it worked in the wrong direction (that is, in the direction opposite what theory and common sense say). Why? 
+It's not clear. Possibly it's because it's based on self-reported data (although just because data is self-reported doesn't
+mean there is anything wrong with it, note), or possibly its effect is overwhelmed by the other variables in the regression.</li> 
+<li>
+ I also looked at <a href="https://en.wikipedia.org/wiki/Index_of_Economic_Freedom">the Index of Economic Freedom</a> (2014)
+ but it was never close to statistical significance in this model and was included for exploratory purposes (that is, I wasn't
+ convinced it should be in the model in the first place, but it was worth investigating).
+</li>
+</ol>
 </div>
 
 <script type="text/javascript">
