@@ -99,21 +99,21 @@ relationship in May 2014</a> but with a different analysis than I use here.
 </ul>
 <br />
 <i>Model notes:</i><br />
-There are two things to note: the exponential term for the democracy score, and the inclusion of p-values just over 0.10.
+There are two things to note: the exponential term for the democracy score, and its inclusion since its p-value is just over 0.10.
 <ol>
 <li>The exponential term, that is, more democracy results in an even greater open data index score (exponentially not just linearly),
 shows the importance of democracy to open data (again, <a href="http://www.rstreet.org/2014/05/22/democracy-and-open-data-are-the-two-linked/">Molly Schwartz's article</a>). But it means that the variables are centered, that is, the average of each is subtracted 
 from each observation (so the mean of the centered version of each variable becomes zero). The you can make the squared term.
 I put a 'C' in the centered versions of the variables, as you can see in the model (I could have renamed everything for
 presentation but it's easy enough to understand).</li>
-<li>If you know statistics a little, you might recall that p-values are taught as a cutoff. Except, that's wrong.
+<li>If you know statistics a little, you might recall that p-values are taught as a cutoff. Except, that's not exactly right.
 P-values are a general guide that allow us to discerne variables of interest or, if we already know some varaibles that are theoretically
-relevant, such as GDP, we can then tell if we should keep them in the model. So, a p-value of 0.1029 for GDP is fine. That tells
-us that we are 89.71% sure that there is a statistical relationship between GDP and the dependent variable (Open Data score),
-given the other variables, <i>all other things being equal</i>. But all other things aren't equal. We know GDP is theoretically
-relevant (a country has to have enough wealth to have a government with a computer infrastructure where data is stored and 
-from where that data can be shared). So, we keep it and the Press Freedom score (a indicator of information sharing), because
-we know that a p-value just over 0.10 is fine for theoretically relevant variables. ("Just over" well how much is ok? I don't know.)</li>
+relevant we can then tell if we should keep them in the model. So, a p-value of 0.1116 for the democracy squared term is fine.
+That tells us that we are 88.84% sure that there is a statistical relationship between the democracy squared term and the dependent variable (Open Data score),
+given the other variables, <i>all other things being equal</i>. But all other things aren't equal. We know democracy is relevant theoretically,
+and from looking at the scatterplot for the democracy score and the open data score (not shown here) it is clear it's a non-linear relationship
+(one that looks like an exponential relationship!). So we keep it, because we know that a p-value just over 0.10 is fine for theoretically relevant variables.
+("Just over" well how much is ok? That's a judgement call that will vary in each situation.)</li>
 </ol>
 <br />
 Lastly, the adjusted R-squared, a measure of how much of the variance of the dependent variable is explained by the model,
