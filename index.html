@@ -172,6 +172,12 @@ var mysvg = d3.select("#svg1-div").append("svg")
     .attr("height", h)
     .attr("width", w);
 
+// add a rect with background color, do this first so other elements are drawn over it
+mysvg.append("rect")
+    .attr("width", "100%")
+    .attr("height", "100%")
+    .attr("fill", "lightgray");
+
 // add the tooltip area to the webpage
 var tooltip = d3.select("body").append("div")
     .attr("class", "tooltip")
