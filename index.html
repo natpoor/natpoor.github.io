@@ -58,6 +58,22 @@ body
 <div id="svg1-div"></div> <!-- This is the div for the scatterplot -->
 
 <div id="bottom-text">
+ <b>Country Level Open Data Predictors</b><br />
+ This graph compares a nation's open data score (Y axis) with the score as predicted by a regression model (X axis, see below).
+ It uses three variables (democracy, innovation, and GDP) to attempt to predict the open data score. The model isn't perfect, but can show 
+ nations that might be over-achievers so we can learn from them, ones that might be under-achievers so we can make them better,
+ and (not shown) other nations that have measures for the three predictor variables can have their open data score estimated
+ with the model and we can see which ones score highly and could be a good focus for expanded open data (as it turns out, most
+ of the ones in this category don't score very high).
+ <br /><br />
+ The predictor variables are all of theoretical interest, and so we hope they also have some statistical predictive weight,
+ which they do. Democracy as a form of citizen-involved government seems like an obvious choice for a predictive variable.
+ Innovation may be also, as open data is innovative in some ways and requires an innovative push to make it happen.
+ GDP may be of interest, as creating digital data, organizing it, and making it digitally available all take economic resources.
+ <br /><br />
+ The graph uses D3.js for the visualization, in part so I could learn a bit of D3. It isn't very complex as D3 visualizations are,
+ but I think the mouseover tool tips are a nice addition to regular static graphs.
+ <br /><br />
 <b>Indexes used:</b><br />
 <i>Dependent variable:</i><br />
 The <a href="http://index.okfn.org/place/">Global Open Data Index</a>, 2014, from the Open Knowledge Foundation.<br />
