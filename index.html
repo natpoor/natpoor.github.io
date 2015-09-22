@@ -72,7 +72,8 @@ body
  GDP may be of interest, as creating digital data, organizing it, and making it digitally available all take economic resources.
  <br /><br />
  The graph uses D3.js for the visualization, in part so I could learn a bit of D3. It isn't very complex as D3 visualizations are,
- but I think the mouseover tool tips are a nice addition to regular static graphs.
+ but I think the mouseover tool tips are a nice addition to regular static graphs. (I had to jitter some of the points and then
+ hand-tweak some of the text label positions.)
  <br /><br />
 <b>Indexes used:</b><br />
 <i>Dependent variable:</i><br />
@@ -80,31 +81,30 @@ The <a href="http://index.okfn.org/place/">Global Open Data Index</a>, 2014, fro
 <br />
 <i>Independent variables:</i><br />
 The <a href="https://en.wikipedia.org/wiki/Democracy_Index">Democracy Index</a>, 2012, via Wikpedia, from the Economist Intelligence Unit.<br />
-The <a href="http://www.globalinnovationindex.org/">Global Innovation Index</a>, 2014.<br />
 <a href="http://data.worldbank.org/indicator/NY.GDP.MKTP.CD">Gross Domestic Product (GDP)</a>, 2014, from the World Bank.<br />
+The <a href="http://hdr.undp.org/en/content/education-index">UN's education index</a>.
 <br />
 <b>The model:</b><br />
 <pre>
-              Estimate Std. Error t value Pr(>|t|)    
-(Intercept) -1.959e+00  1.703e+00  -1.150   0.2532    
-dem_scoreC   5.472e+00  1.195e+00   4.581 1.57e-05 ***
-demCsquared  5.793e-01  3.603e-01   1.608   0.1116    
-gii_scoreC   4.013e-01  1.797e-01   2.233   0.0282 *  
-gdpC         1.301e-06  5.838e-07   2.228   0.0285 *  
+(Intercept) -2.638e+00  1.625e+00  -1.623  0.10811    
+dem_scoreC   5.940e+00  1.058e+00   5.614 2.32e-07 ***
+demCsquared  7.676e-01  3.251e-01   2.361  0.02045 *  
+educ_scoreC  2.338e+01  1.070e+01   2.185  0.03155 *  
+gdpC         1.558e-06  5.574e-07   2.796  0.00636 ** 
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’
 
-Residual standard error: 11.28 on 85 degrees of freedom
-Multiple R-squared:  0.6187,	Adjusted R-squared:  0.6007 
-F-statistic: 34.47 on 4 and 85 DF,  p-value: < 2.2e-16
+Residual standard error: 11.32 on 87 degrees of freedom
+Multiple R-squared:   0.63,	Adjusted R-squared:  0.613 
+F-statistic: 37.04 on 4 and 87 DF,  p-value: < 2.2e-16
 </pre><br />
 <i>Standardized coefficients:</i><br />
 (A measure of relative effect.)
 <pre>
-dem_scoreC   0.566
-demCsquared  0.141
-gii_scoreC   0.260
-gdpC         0.162
+dem_scoreC   0.608
+demCsquared  0.179
+educ_scoreC  0.221
+gdpC         0.189
 </pre>
 <br />
 <b>What does this mean?</b><br />
@@ -115,37 +115,32 @@ even more open data in a non-linear relationship (so like 1=1, 2=4, 3=9, etc).
 <a href="http://www.rstreet.org/2014/05/22/democracy-and-open-data-are-the-two-linked/">Molly Schwartz wrote about the
 relationship in May 2014</a> but with a different analysis than I use here. However, innovation and GDP are important as well,
 just not as important, as you can see by the standardized (relative to each other) coefficients. We use these because
-the predictors all use different units/scales. (So we can see that democracy is roughly twice as important as innovation,
-according to this model with these specifics measures -- 0.566 and 0.260.)
+the predictors all use different units/scales. (So we can see that democracy is roughly three as important as education and GDP,
+according to this model with these specifics measures.)
 <br /><br />
 <i>Variable scales:</i><br />
 <ul>
  <li>Open data: 0-100 (percentage). Higher = more open data.</li>
  <li>Democracy index: 1.00 - 9.99 (essentially 1.00 - 10.00, two decimal places). Higher = more democracy.</li>
- <li>Global innovation: 0.00 - 100 (two decimal places). Higher = more innovation.</li>
+ <li>Eduction index: 0 - 1.00. Higher = more education.</li>
  <li>GDP: $US in millions. Higher = more GDP.</li>
 </ul>
 <br />
 <i>Model notes:</i><br />
-There are two things to note: the exponential term for the democracy score, and its inclusion since its p-value is just over 0.10.
-<ol>
-<li>The exponential term, that is, more democracy results in an even greater open data index score (exponentially not just linearly),
+The exponential term for the democracy variable shows that more democracy results in an even greater open data index score (exponentially not just linearly),
 shows the importance of democracy to open data (again, <a href="http://www.rstreet.org/2014/05/22/democracy-and-open-data-are-the-two-linked/">Molly Schwartz's article</a>). But it means that the variables are centered, that is, the average of each is subtracted 
 from each observation (so the mean of the centered version of each variable becomes zero). The you can make the squared term.
 I put a 'C' in the centered versions of the variables, as you can see in the model (I could have renamed everything for
-presentation but it's easy enough to understand).</li>
-<li>If you know statistics a little, you might recall that p-values are taught as a cutoff. <a href="http://www.nature.com/news/scientific-method-statistical-errors-1.14700">Except that's not exactly right</a>.
-P-values are a general guide that allow us to discerne variables of interest or, if we already know some varaibles that are theoretically
-relevant we can then tell if we should keep them in the model. So, a p-value of 0.1116 for the democracy squared term is fine.
-That tells us that we are 88.84% sure that there is a statistical relationship between the democracy squared term and the dependent variable (Open Data score),
-given the other variables, <i>all other things being equal</i>. But all other things aren't equal. We know democracy is relevant theoretically,
-and from looking at the scatterplot for the democracy score and the open data score (not shown here) it is clear it's a non-linear relationship
-(one that looks like an exponential relationship!). So we keep it, because we know that a p-value just over 0.10 is fine for theoretically relevant variables.
-("Just over" well how much is ok? That's a judgement call that will vary in each situation.)</li>
-</ol>
+presentation but it's easy enough to understand).
+<br />
+I had an interesting path finding the right variables, and then had serious multicolinearity issues and had to do somewhat
+arcane sounding things like checking the VIF in order to see which variables were stepping on the toes of the other variables.
+I found some helpful blog posts about it all, 
+<a href="http://blog.minitab.com/blog/understanding-statistics/handling-multicollinearity-in-regression-analysis">here is one</a>,
+<a href="http://blog.minitab.com/blog/adventures-in-statistics/what-are-the-effects-of-multicollinearity-and-when-can-i-ignore-them">here is the other</a>. 
 <br />
 Lastly, the adjusted R-squared, a measure of how much of the variance of the dependent variable is explained by the model,
-is 0.6007, so about 60% of what is going on with the Open Data score is explained by the model, which is really good
+is 0.613, so about 61% of what is going on with the Open Data score is explained by the model, which is really good
 (it's especially a good amount for the social sciences).
 <br /><br />
 <i>Other indexes/variables I didn't use:</i>
@@ -162,9 +157,10 @@ is on its own. In theory, freedom to publicize information should correlate with
  but it was never close to statistical significance in this model and was included for exploratory purposes (that is, I wasn't
  convinced it should be in the model in the first place, but it was worth investigating).
 </li>
-<li>Lastly, I included the <a href="http://hdr.undp.org/en/content/education-index">UN's education index</a>,
-and although it sounds like a good bet in terms of theory (the population must be educated to code for data)
-and on its own it had a decent correlation with open data (>0.6), in the model it was not near to statistical significance.
+<li>The <a href="http://www.globalinnovationindex.org/">Global Innovation Index</a>, 2014<br />, worked pretty well as a 
+variable until I found and included the <a href="http://hdr.undp.org/en/content/education-index">UN's education index</a>,
+beause the two correlated too highly and it was causing problems in the model (the multicolinearity I discuss above).
+The education index ended up working better in terms of the statistics.
 </li>
 </ol>
 </div>
