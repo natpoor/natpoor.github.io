@@ -60,7 +60,7 @@ body
 <div id="bottom-text">
  <b>Country Level Open Data Predictors</b><br />
  This graph compares a nation's open data score (Y axis) with the score as predicted by a regression model (X axis, see below).
- It uses three variables (democracy, innovation, and GDP) to attempt to predict the open data score. The model isn't perfect, but can show 
+ It uses three variables (democracy, education, and GDP) to attempt to predict the open data score. The model isn't perfect, but can show 
  nations that might be over-achievers so we can learn from them, ones that might be under-achievers so we can make them better,
  and (not shown) other nations that have measures for the three predictor variables can have their open data score estimated
  with the model and we can see which ones score highly and could be a good focus for expanded open data (as it turns out, most
@@ -68,7 +68,7 @@ body
  <br /><br />
  The predictor variables are all of theoretical interest, and so we hope they also have some statistical predictive weight,
  which they do. Democracy as a form of citizen-involved government seems like an obvious choice for a predictive variable.
- Innovation may be also, as open data is innovative in some ways and requires an innovative push to make it happen.
+ Education may be also, as open data requires educated citizens (well a few at least, to code and understand concepts).
  GDP may be of interest, as creating digital data, organizing it, and making it digitally available all take economic resources.
  <br /><br />
  The graph uses D3.js for the visualization, in part so I could learn a bit of D3. It isn't very complex as D3 visualizations are,
@@ -82,7 +82,8 @@ The <a href="http://index.okfn.org/place/">Global Open Data Index</a>, 2014, fro
 <i>Independent variables:</i><br />
 The <a href="https://en.wikipedia.org/wiki/Democracy_Index">Democracy Index</a>, 2012, via Wikpedia, from the Economist Intelligence Unit.<br />
 <a href="http://data.worldbank.org/indicator/NY.GDP.MKTP.CD">Gross Domestic Product (GDP)</a>, 2014, from the World Bank.<br />
-The <a href="http://hdr.undp.org/en/content/education-index">UN's education index</a>.
+The <a href="http://hdr.undp.org/en/content/education-index">UN's education index</a>, 2013.
+<br />
 <br />
 <b>The model:</b><br />
 <pre>
@@ -157,10 +158,12 @@ is on its own. In theory, freedom to publicize information should correlate with
  but it was never close to statistical significance in this model and was included for exploratory purposes (that is, I wasn't
  convinced it should be in the model in the first place, but it was worth investigating).
 </li>
-<li>The <a href="http://www.globalinnovationindex.org/">Global Innovation Index</a>, 2014<br />, worked pretty well as a 
+<li>The <a href="http://www.globalinnovationindex.org/">Global Innovation Index</a>, 2014, worked pretty well as a 
 variable until I found and included the <a href="http://hdr.undp.org/en/content/education-index">UN's education index</a>,
 beause the two correlated too highly and it was causing problems in the model (the multicolinearity I discuss above).
-The education index ended up working better in terms of the statistics.
+The education index ended up working better in terms of the statistics. This doesn't mean that innovation, as measured
+by this index, doesn't play a part, it just means that in this model (which includes the UN education index) the GII
+doesn't add enough information that is different from the education measure.
 </li>
 </ol>
 </div>
