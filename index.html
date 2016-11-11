@@ -1,8 +1,7 @@
 <html>
 <!-- Working on a map d3, it won't work right away. -->
-
-    <b>Yes, not working right now, I know. It's in progress.</b>
-<p>
+<head>
+    <script>
 var map = d3.geomap.choropleth()
     .geofile('USA.json')
     .projection(d3.geo.albersUsa)
@@ -16,11 +15,15 @@ d3.csv('states_data.csv', function(error, data) {
         .datum(data)
         .call(map.draw, map);
 });
+    </script>
 
-
+    </head>
+    <body>
+    <b>Yes, not working right now, I know. It's in progress.</b>
+<p>
 
     
     <div id="map"></div>
 
-    
+    </body>    
 </html>
